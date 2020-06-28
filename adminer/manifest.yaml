@@ -1,0 +1,7 @@
+---
+name: Adminer
+version: v4.7.7
+maintainer: me@r15cookie.com
+description: KubeDB provides several types of databases as a Kubernetes Operator
+url: https://www.adminer.org/
+category: database

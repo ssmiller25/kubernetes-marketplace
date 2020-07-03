@@ -1,0 +1,15 @@
+apiVersion: kubedb.com/v1alpha1
+kind: MySQL
+metadata:
+  name: mysql-test
+spec:
+  version: "8.0-v2"
+  storageType: Durable
+  storage:
+    storageClassName: "longhorn"
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  terminationPolicy: DoNotTerminate

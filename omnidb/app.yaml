@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnidb
+spec:
+  ports:
+  - port: 8080
+  selector:
+    app: omnidb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnidb
+spec:
+  selector:
+    matchLabels:
+      app: omnidb
+  template:
+    metadata:
+      labels:
+        app: omnidb
+    spec:
+      containers:
+      - image: taivokasper/omnidb:v2.17.0-alpine_3.11
+        name: omnidb

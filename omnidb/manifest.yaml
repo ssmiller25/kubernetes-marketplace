@@ -1,0 +1,7 @@
+---
+name: OmniDB
+version: v2.17.0
+maintainer: me@r15cookie.com
+description: OmniDB is a web front-end for relational databases, such as MariaDB (MySQL) and PostgreSQL
+url: https://omnidb.org/
+category: database

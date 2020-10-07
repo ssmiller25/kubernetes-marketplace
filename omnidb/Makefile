@@ -12,10 +12,10 @@ test:
 	@$(CIVO_CMD) k3s create $(CIVO_TEST_CLUSTER_NAME) -n 3 --size g2.small --wait
 	@$(CIVO_CMD) k3s config $(CIVO_TEST_CLUSTER_NAME) > $(CIVO_KUBECONFIG)
 	@echo "Adding Longhorn"
-	@$(CIVO_CMD) k3s apps add Longhorn --cluster 
+	@$(CIVO_CMD) k3s apps add Longhorn --cluster $(CIVO_TEST_CLUSTER_NAME)
 	# check every 10 seconds for successful install
 	@for i in $(seq 1 10); do \
-		numready=$(kubectl get -n longhorn-system daemonset.apps/longhorn-csi-plugin -ojson | jq -r .status.numberReady); \
+		numready=$($(KUBECTL) get -n longhorn-system daemonset.apps/longhorn-csi-plugin -ojson | jq -r .status.numberReady); \
 		if [ "${numready}" == "3" ]; then \
 		  break; \
 		elif [ ${i} == "10" ]; then \
@@ -23,6 +23,20 @@ test:
 			exit 1; \
 		fi; \
 	done \ 
+	@echo "Adding KubeDB"
+	@$(CIVO_CMD) k3s apps add KubeDB --cluster $(CIVO_TEST_CLUSTER_NAME)
+	# check every 10 seconds for successful install
+	@for i in $(seq 1 10); do \
+		numready=$($(KUBECTL) get -n kubedb deploy/kubedb-op -ojson | jq -r .status.readyReplicas); \
+		if [ "${numready}" == "1" ]; then \
+		  break; \
+		elif [ ${i} == "10" ]; then \
+			echo "KubeDB not available, stopping test"; \
+			exit 1; \
+		fi; \
+	done \ 
+	@echo "Creating MySQL Database"
+	@$(KUBECTL) create -f test/mysql.yaml
 	@echo "Applying manifest and test run"
 	@$(KUBECTL) apply -f app.yaml
 	@$(KUBECTL) create -f test-manifests/1-task.yaml 

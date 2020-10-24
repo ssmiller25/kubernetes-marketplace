@@ -1,0 +1,10 @@
+---
+name: WikiJS
+version: v0.0.1
+maintainer: me@r15cookie.com
+description: A powerful and extensible open source Wiki package.
+url: https://wiki.js.org/
+category: management
+dependencies:
+  - longhorn
+  - kubedb

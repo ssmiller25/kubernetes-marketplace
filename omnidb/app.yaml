@@ -5,7 +5,10 @@ metadata:
   name: omnidb
 spec:
   ports:
-  - port: 8080
+  - name: http
+    port: 8080
+  - name: websocket
+    port: 25482
   selector:
     app: omnidb
 ---
